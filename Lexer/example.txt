@@ -1,0 +1,6 @@
+int a = 5;
+int b = 0xA;
+bool var = true;
+size(a);
+resize a [2];
+return 0;
