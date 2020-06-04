@@ -1,0 +1,4 @@
+int routing mul a, b
+int res;
+res = a * b;
+return res;
