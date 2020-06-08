@@ -32,8 +32,8 @@ reserved = {
     'pathfinder': 'PATHFINDER',
     'routing': 'ROUTING',
     'most': 'MOST',
-    'int': 'INT',
-    'bool': 'BOOL',
+    'digit': 'DIGIT',
+    'logic': 'LOGIC',
     'size': 'SIZE',
     'resize': 'RESIZE',
     'to': 'TO',
@@ -82,7 +82,7 @@ class Lexer(object):
         return t
 
     def t_INT_HEX(self, t):
-        r'[0][xX][0-9a-fA-F]+'
+        r'([0][x][0-9]+[A-F]*)|[A-F]'
         t.value = int(t.value, 16)
         return t
 
