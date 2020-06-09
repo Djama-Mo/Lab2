@@ -81,7 +81,7 @@ class Lexer(object):
         return t
 
     def t_INT_HEX(self, t):
-        r'([0][x][0-9]+[A-F]*)|[A-F]'
+        r'([0][x][A-F][0-9A-F]*)|([0-9]([A-F]+[0-9]*)*)'# 0xA1 1A
         t.value = int(t.value, 16)
         return t
 
