@@ -42,7 +42,7 @@ class Parser:
                     | statement
                     | NL"""
         if len(p) == 3:
-            p[0] = Tree('statement list', children=[p[1], p[2]], lineno=p.lineno(1))
+            p[0] = Tree('statement list', p[2], children=[p[1], p[2]], lineno=p.lineno(1))
         else:
             if p[0] != '\n':
                 p[0] = p[1]
@@ -62,9 +62,8 @@ class Parser:
     def p_statement(self, p):
         """statement : declaration ENDSTR NL
                     | assignment ENDSTR NL
-                    | SIZE ENDSTR NL
-                    | TO ENDSTR NL
-                    | RESIZE ENDSTR NL
+                    | size ENDSTR NL
+                    | to ENDSTR NL
                     | for
                     | check
                     | routing
@@ -78,7 +77,10 @@ class Parser:
 
     def p_declaration(self, p):
         """declaration : type var_list"""
-        p[0] = Tree('declaration', children=[p[1], p[2]], lineno=p.lineno(1))
+        if len(p) == 3:
+            p[0] = Tree('declaration', children=[p[1], p[2]], lineno=p.lineno(1))
+        # else:
+        #     p[0] = Tree('declaration', p[2], children=[p[1], p[2], p[4]], lineno=p.lineno(2))
 
     def p_var_list(self, p):
         """var_list : variable
@@ -116,7 +118,8 @@ class Parser:
 
     def p_expr(self, p):
         """expr : variable
-                | PERFORM
+                | digit
+                | logic
                 | math_expr"""
         p[0] = p[1]
         # p[0] = node('expression', ch=p[1], no=p.lineno(1))
@@ -162,7 +165,7 @@ class Parser:
     def p_arr_var(self, p):
         """arr_var : VARIABLE indexing
                     | VARIABLE"""
-        p[0] = Tree('array', )
+        p[0] = Tree('array', p[1], lineno=p.lineno(2))
 
     def p_indexing(self, p):
         """indexing : L_SQBRACKET INT_DEC R_SQBRACKET
@@ -173,15 +176,15 @@ class Parser:
             p[0] = Tree('index', children=[p[2], p[4]], lineno=p.lineno(1))
 
     def p_size(self, p):
-        """size : SIZE LBRACKET VARIABLE RBRACKET ENDSTR NL"""
-        p[0] = Tree('size', value=p[1], children=p[3], lineno=p.lineno(1))
+        """size : SIZE LBRACKET VARIABLE RBRACKET"""
+        p[0] = Tree('size', value=p[3], children=p[3], lineno=p.lineno(1), lexpos=p.lexpos(1))
 
     def p_to(self, p):
-        """to : TO type VARIABLE ENDSTR NL"""
-        p[0] = Tree('type change', value=p[1], children=p[3], lineno=p.lineno(1))
+        """to : TO type VARIABLE"""
+        p[0] = Tree('type change', value=[p[2], p[3]], children=p[3], lineno=p.lineno(1))
 
     def p_resize(self, p):
-        """resize : RESIZE VARIABLE L_SQBRACKET INT_DEC R_SQBRACKET ENDSTR NL"""
+        """resize : RESIZE VARIABLE L_SQBRACKET INT_DEC R_SQBRACKET"""
         p[0] = Tree('resize', value=p[1], children=p[2], lineno=p.lineno(1))
 
     def p_perform(self, p):
