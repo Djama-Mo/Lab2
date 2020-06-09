@@ -29,7 +29,6 @@ reserved = {
     'surroundings': 'SURROUNDINGS',
     'return': 'RETURN',
     'perform': 'PERFORM',
-    'pathfinder': 'PATHFINDER',
     'routing': 'ROUTING',
     'most': 'MOST',
     'digit': 'DIGIT',
