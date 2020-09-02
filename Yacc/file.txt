@@ -1,4 +1,34 @@
-int routing mul a, b
-int res;
-res = a * b;
-return res;
+digit a = 5;
+digit b, c = 10;
+logic arr[20] = 7;
+digit oct = 042;
+digit hex = 0xA21;
+a = arr[10];
+size(oct);
+to logic b;
+to digit a;
+resize c[15];
+a = b + c;
+a = eq a;
+lte [] arr;
+a = !b;
+a = b && c;
+a = most arr;
+for a stop b step c
+{
+    a = a / 2;
+}
+check !a then
+    a = a + 10;
+otherwise
+    b = b + 30;
+rotate 90;
+move 4;
+surroundings a;
+digit routing foo a
+{
+    a = b * c;
+    a = a - 13;
+}
+return a;
+perform foo a;
