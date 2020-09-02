@@ -1,5 +1,5 @@
 import sys
-from Lab2.Syntax_tree.syntax_tree import Tree
+from syntax_tree import Tree
 
 
 class Error_handler(object):
@@ -13,7 +13,14 @@ class Error_handler(object):
                       'IndexError',
                       'RedeclarationError',
                       'ConverseError',
-                      'NotArrayError']
+                      'NotArrayError',
+                      'UndeclaredVariableError',
+                      'WrongParameterError',
+                      'ArrayDeclarationError',
+                      'ElementDeclarationError',
+                      'ArrayToVariableError',
+                      'UndeclaredFunctionError',
+                      'CallPathfinderError']
 
     def call(self, err_type, node: Tree = None):
         self.type = err_type
@@ -31,32 +38,56 @@ class Error_handler(object):
         elif self.type == 4:
             sys.stderr.write(f'Index is wrong at line {self.node.lineno}\n')
         elif self.type == 5:
-            sys.stderr.write(f'Redeclaration of a variable "{self.node.child[1].child[0].value}" at line '
-                             f'{self.node.child[1].child[0].lineno}\n')
+            sys.stderr.write(f'Redeclaration of a variable "{self.node.children[1].children[0].value}" at line '
+                             f'{self.node.children[1].children[0].lineno}\n')
         elif self.type == 6:
             sys.stderr.write(f"Can't converse types at line {self.node.lineno}\n")
         elif self.type == 7:
             sys.stderr.write(
                 f'Trying to get index from not array variable "{self.node.value}" at line {self.node.lineno}\n')
+        elif self.type == 8:
+            if node.type == 'variable' or node.type == 'arr variable':
+                sys.stderr.write(f'Using undeclared variable "{self.node.value}" at line {self.node.lineno}\n')
+            else:
+                sys.stderr.write(
+                    f'Using undeclared variable "{self.node.children[0].value}" at line {self.node.children[0].lineno}\n')
+        elif self.type == 9:
+            sys.stderr.write(f'Wrong parameters in function "{self.node.value}" at line {self.node.lineno}\n')
+        elif self.type == 10:
+            if node.children[1].type == 'variable' or node.children[1].type == 'arr variable':
+                sys.stderr.write(
+                    f'Wrong declaration of array "{self.node.children[1].value}" at line {self.node.children[1].lineno}\n')
+            else:
+                sys.stderr.write(
+                    f'Wrong declaration of array "{self.node.children[1].children[0].value}" at line {self.node.children[1].children[0].lineno}\n')
+        elif self.type == 11:
+            sys.stderr.write(
+                f'Redeclaration of a variable "{self.node.children[1].children[0].value}" at line {self.node.children[1].children[0].lineno}\n')
+        elif self.type == 12:
+            sys.stderr.write(f'Can\'t assign variable to array variable or vice versa at line {self.node.lineno}\n')
+        elif self.type == 13:
+            sys.stderr.write(f'Calling undeclared function "{self.node.value}" at line {self.node.lineno}\n')
+        elif self.type == 14:
+            sys.stderr.write(f'Calling PATHFINDER function at line {self.node.lineno}\n')
 
 
-class UnexpectedError(object, Exception):
+class UnexpectedError(Exception):
     pass
 
 
-class TypeError(object, Exception):
+class TypeError(Exception):
     pass
 
 
-class ValueError(object, Exception):
+class ValueError(Exception):
     pass
 
 
-class StartPointError(object, Exception):
+class StartPointError(Exception):
     pass
 
 
-class IndexError(object, Exception):
+class IndexError(Exception):
     pass
 
 
@@ -67,5 +98,34 @@ class RedeclarationError(Exception):
 class ConverseError(Exception):
     pass
 
+
 class NotArrayError(Exception):
+    pass
+
+
+class UndeclaredVariableError(Exception):
+    pass
+
+
+class WrongParameterError(Exception):
+    pass
+
+
+class ArrayDeclarationError(Exception):
+    pass
+
+
+class ElementDeclarationError(Exception):
+    pass
+
+
+class ArrayToVariableError(Exception):
+    pass
+
+
+class UndeclaredFunctionError(Exception):
+    pass
+
+
+class CallPathfinderError(Exception):
     pass
