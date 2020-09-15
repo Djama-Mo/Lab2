@@ -90,6 +90,10 @@ class Parser:
         """assignment : variable EQQ expr"""
         p[0] = Tree('assignment', value=p[2], children=[p[1], p[3]], lineno=p.lineno(2))
 
+    # def p_arr_assignment(self, p):
+    #     """assignment : variable EQQ expr"""
+    #     p[0] = Tree('assignment array', value=p[2], children=[p[1], p[3]], lineno=p.lineno(2))
+
     def p_ass_error(self, p):
         """assignment : variable EQQ error"""
         p[0] = Tree('error', value='Wrong assignment', children=p[1], lineno=p.lineno(2))
@@ -99,6 +103,8 @@ class Parser:
         """type : DIGIT
                 | LOGIC"""
         p[0] = Tree('type', value=p[1], children=[], lineno=p.lineno(1), lexpos=p.lexpos(1))
+
+    # def p_type_vec(self):
 
     def p_digit(self, p):
         """digit : INT_DEC
@@ -129,9 +135,9 @@ class Parser:
                     | DENY expr
                     | MOST expr"""
         if len(p) == 3:
-            p[0] = Tree('unary_op', value=p[1], children=p[2], lineno=p.lineno(2))
+            p[0] = Tree('calculation', value=p[1], children=p[2], lineno=p.lineno(2))
         else:
-            p[0] = Tree('binary_op', value=p[2], children=[p[1], p[3]], lineno=p.lineno(2))
+            p[0] = Tree('calculation', value=p[2], children=[p[1], p[3]], lineno=p.lineno(2))
 
     def p_expr_br(self, p):
         """expr : L_SQBRACKET expr R_SQBRACKET"""
@@ -157,20 +163,17 @@ class Parser:
         p[0] = Tree('comparison', value=p[1], children=p[4], lineno=p.lineno(1))
 
     def p_variable(self, p):
-        """variable : VARIABLE
-                    | arr_var"""
+        """variable : VARIABLE"""
         if len(p) == 2:
             p[0] = Tree('variable', p[1], lineno=p.lineno(1), lexpos=p.lexpos(1))
-        # else:
-        #     p[0] = Tree('indexing', p[1], children=p[3], lineno=p.lineno(1), lexpos=p.lexpos(1))
 
-    def p_arr_var(self, p):
-        """arr_var : VARIABLE indexing
-                   | arr_var COMMA arr_var"""
+    def p_arr_variable(self, p):
+        """variable : VARIABLE indexing
+                   | variable COMMA variable"""
         if p[2] == ',':
             p[0] = Tree('array_comma', children=[p[1], p[3]], lineno=p.lineno(2))
         else:
-            p[0] = Tree('array_lvl', value=p[1], children=p[2], lineno=p.lineno(2))
+            p[0] = Tree('array variable', value=p[1], children=p[2], lineno=p.lineno(2))
 
     def p_indexing(self, p):
         """indexing : L_SQBRACKET INT_DEC R_SQBRACKET
