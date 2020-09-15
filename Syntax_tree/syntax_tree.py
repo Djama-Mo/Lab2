@@ -2,7 +2,7 @@ class Tree:
     def __init__(self, node_type, value=None, children=None, lineno=None, lexpos=None):
         self.type = node_type
         self.value = value
-        self.children = children
+        self.children = children or []
         self.lineno = lineno
         self.lexpos = lexpos
 
