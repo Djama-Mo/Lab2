@@ -17,7 +17,6 @@ class Error_handler(object):
                       'UndeclaredVariableError',
                       'WrongParameterError',
                       'ArrayDeclarationError',
-                      'ElementDeclarationError',
                       'ArrayToVariableError',
                       'UndeclaredFunctionError',
                       'CallPathfinderError']
@@ -61,13 +60,10 @@ class Error_handler(object):
                 sys.stderr.write(
                     f'Wrong declaration of array "{self.node.children[1].children[0].value}" at line {self.node.children[1].children[0].lineno}\n')
         elif self.type == 11:
-            sys.stderr.write(
-                f'Redeclaration of a variable "{self.node.children[1].children[0].value}" at line {self.node.children[1].children[0].lineno}\n')
-        elif self.type == 12:
             sys.stderr.write(f'Can\'t assign variable to array variable or vice versa at line {self.node.lineno}\n')
-        elif self.type == 13:
+        elif self.type == 12:
             sys.stderr.write(f'Calling undeclared function "{self.node.value}" at line {self.node.lineno}\n')
-        elif self.type == 14:
+        elif self.type == 13:
             sys.stderr.write(f'Calling PATHFINDER function at line {self.node.lineno}\n')
 
 
@@ -112,10 +108,6 @@ class WrongParameterError(Exception):
 
 
 class ArrayDeclarationError(Exception):
-    pass
-
-
-class ElementDeclarationError(Exception):
     pass
 
 
