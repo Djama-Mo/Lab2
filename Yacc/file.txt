@@ -9,26 +9,28 @@ to logic b;
 to digit a;
 resize c[15];
 a = b + c;
-a = eq a;
+a = eq a - c;
 lte [] arr;
 a = !b;
 a = b && c;
 a = most arr;
+c = 2;
+logic d = true;
 for a stop b step c
 {
-    a = a / 2;
+    d = d + c;
 }
-check !a then
+check eq a - c then
     a = a + 10;
 otherwise
     b = b + 30;
 rotate 90;
 move 4;
 surroundings a;
-digit routing foo a
+digit routing foo a, b
 {
     a = b * c;
     a = a - 13;
 }
 return a;
-perform foo a;
+a = perform foo a;

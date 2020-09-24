@@ -6,7 +6,7 @@ from ply.lex import LexError
 
 
 def main():
-    with open('file.txt', 'r') as fh:
+    with open('alg.txt', 'r') as fh:
         data = fh.read()
         parser = Parser()
         tree = parser.parser.parse(data, debug=True)
@@ -44,16 +44,23 @@ class Parser:
             p[0] = p[1]
 
     def p_stat_list(self, p):
-        """stat_list : stat_list statement
+        """stat_list : PLEASE statement THANK YOU
+                    | stat_list statement
                     | statement
                     | NL"""
         if len(p) == 3:
             p[0] = Tree('statement list', p[2], children=[p[1], p[2]], lineno=p.lineno(1))
+        elif p[1] == 'please':
+            p[0] = Tree('statement list', p[3], children=[p[2], p[3]], lineno=p.lineno(1))
         else:
             if p[0] != '\n':
                 p[0] = p[1]
             else:
                 p[0] = Tree('NL', lineno=p.lineno(1))
+
+    # def p_thankyou(self, p):
+    #     """thankyou : """
+    #     p[0] = p[2]
 
     def p_statement(self, p):
         """statement : declaration ENDSTR NL
@@ -90,10 +97,6 @@ class Parser:
         """assignment : variable EQQ expr"""
         p[0] = Tree('assignment', value=p[2], children=[p[1], p[3]], lineno=p.lineno(2))
 
-    # def p_arr_assignment(self, p):
-    #     """assignment : variable EQQ expr"""
-    #     p[0] = Tree('assignment array', value=p[2], children=[p[1], p[3]], lineno=p.lineno(2))
-
     def p_ass_error(self, p):
         """assignment : variable EQQ error"""
         p[0] = Tree('error', value='Wrong assignment', children=p[1], lineno=p.lineno(2))
@@ -104,7 +107,9 @@ class Parser:
                 | LOGIC"""
         p[0] = Tree('type', value=p[1], children=[], lineno=p.lineno(1), lexpos=p.lexpos(1))
 
-    # def p_type_vec(self):
+    def p_type_vec(self, p):
+        """type : type VARIABLE indexing"""
+        p[0] = Tree('arr', value=p[2], children=p[1], lineno=p.lineno(1))
 
     def p_digit(self, p):
         """digit : INT_DEC
@@ -123,7 +128,8 @@ class Parser:
                 | logic
                 | math_expr
                 | perform
-                | comp"""
+                | comp
+                | command"""
         p[0] = p[1]
 
     def p_math_expr(self, p):
@@ -168,25 +174,32 @@ class Parser:
             p[0] = Tree('variable', p[1], lineno=p.lineno(1), lexpos=p.lexpos(1))
 
     def p_arr_variable(self, p):
-        """variable : VARIABLE indexing
-                   | variable COMMA variable"""
-        if p[2] == ',':
-            p[0] = Tree('array_comma', children=[p[1], p[3]], lineno=p.lineno(2))
-        else:
-            p[0] = Tree('array variable', value=p[1], children=p[2], lineno=p.lineno(2))
+        """variable : VARIABLE indexing"""
+        # if p[3] == ',':
+        #     p[0] = Tree('array_comma', children=[p[1], p[3]], lineno=p.lineno(2))
+        # else:
+        p[0] = Tree('array variable', value=p[1], children=p[2], lineno=p.lineno(2))
 
     def p_indexing(self, p):
-        """indexing : L_SQBRACKET INT_DEC R_SQBRACKET
-                    | L_SQBRACKET INT_DEC R_SQBRACKET indexing"""
-        if len(p) == 4:
-            p[0] = Tree('indexing', children=p[2], lineno=p.lineno(1))
-        elif len(p) == 3:
-            p[0] = Tree('indexing', children=[], lineno=p.lineno(1))
+        """indexing : L_SQBRACKET VARIABLE R_SQBRACKET
+                    | L_SQBRACKET digit R_SQBRACKET
+                    | L_SQBRACKET digits R_SQBRACKET
+                    | L_SQBRACKET var_list R_SQBRACKET"""
+        # if len(p) == 3:
+        p[0] = Tree('indexing', children=p[2], lineno=p.lineno(1))
+
+    def p_digits(self, p):
+        """digits : digit
+                  | digits COMMA digits"""
+        if len(p) == 2:
+            p[0] = p[1]
+        else:
+            p[0] = Tree('matr', children=[p[1], p[3]], lineno=p.lineno)
 
     def p_size(self, p):
         """size : SIZE LBRACKET VARIABLE RBRACKET
                 | SIZE LBRACKET type RBRACKET"""
-        p[0] = Tree('size', value=p[3], lineno=p.lineno(1), lexpos=p.lexpos(1))
+        p[0] = Tree('size', value=p[1], children=p[3], lineno=p.lineno(1), lexpos=p.lexpos(1))
 
     def p_to(self, p):
         """to : TO type VARIABLE"""
@@ -194,7 +207,7 @@ class Parser:
 
     def p_resize(self, p):
         """resize : RESIZE VARIABLE L_SQBRACKET INT_DEC R_SQBRACKET"""
-        p[0] = Tree('resize', value=[p[2], p[4]], children=p[2], lineno=p.lineno(1))
+        p[0] = Tree('resize', value=p[4], children=p[2], lineno=p.lineno(1))
 
     def p_perform(self, p):
         """perform : PERFORM VARIABLE var_list"""
@@ -213,7 +226,7 @@ class Parser:
         if len(p) == 6:
             p[0] = Tree('if_then', children={'condition': p[2], 'body': p[5]}, lineno=p.lineno(1))
         else:
-            p[0] = Tree('if_then', children={'condition': p[2], 'body_1': p[5], 'body_2': p[8]}, lineno=p.lineno(1))
+            p[0] = Tree('if_th_el', children={'condition': p[2], 'body_1': p[5], 'body_2': p[8]}, lineno=p.lineno(1))
 
     def p_check_error(self, p):
         """check : CHECK expr error"""
