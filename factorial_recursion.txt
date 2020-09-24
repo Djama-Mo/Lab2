@@ -1,0 +1,38 @@
+digit routing mul r, i
+{
+    digit res = 0;
+    digit j = i;
+    digit stp = 0;
+    digit stepp = -1;
+    for j stop stp step stepp
+        res = res + r;
+}
+return res;
+
+digit routing factorial n
+{
+    digit res = n;
+    digit idk = 0;
+    check lt n then
+        res = 0;
+    otherwise
+    {
+        check gt n then
+        {
+            n = n - 1;
+            idk = perform factorial n;
+            n = n + 1;
+            res = perform mul n, idk;
+        }
+        otherwise
+            res = 1;
+    }
+}
+return res;
+
+digit routing pathfinder var
+{
+    digit n = 7;
+    digit res = perform factorial n;
+}
+return 0;

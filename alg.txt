@@ -1,0 +1,28 @@
+digit routing pathfinder var
+{
+    digit var = 0;
+    digit ch = perform check_exit var;
+}
+return 0;
+
+digit routing check_exit var
+{
+    digit walls = 1;
+    digit exit = 2;
+    digit ang = 0;
+    digit stopp = 360;
+    digit stepp = 60;
+    digit check_wall = 0;
+    digit exit_check = 0;
+    digit angle = 0;
+    for ang stop stopp step stepp
+    {
+        digit wall = surroundings walls;
+        check_wall = wall[1, 0, 0];
+        check lt check_wall then
+            angle = check_wall;
+    }
+    rotate angle;
+    move 1;
+}
+return 0;

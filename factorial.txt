@@ -1,0 +1,32 @@
+digit routing mul r, i
+{
+    digit res = 0;
+    digit j = i;
+    digit st = 0;
+    digit sh = -1;
+    for j stop st step sh
+    {
+        res = res + r;
+    }
+}
+return res;
+
+digit routing factorial n
+{
+    digit r = 1;
+    digit i = 2;
+    digit st = n + 1;
+    digit sh = 1;
+    for i stop st step sh
+    {
+        r = perform mul r, i;
+    }
+}
+return r;
+
+digit routing pathfinder a
+{
+    digit n = 13;
+    n = perform factorial n;
+}
+return 0;

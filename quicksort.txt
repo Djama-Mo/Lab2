@@ -1,0 +1,35 @@
+digit routing quicksort mas, n
+{
+    digit i, j = 1;
+    digit sw, min = i;
+    digit stepp = 1;
+    digit stopp = n;
+    digit sh = 1;
+    digit stp = n + 1;
+    for i stop stopp step stepp
+    {
+        min = i;
+        j = i + 1;
+        for j stop stp step sh
+        {
+            check lt mas[j] - mas[min] then
+                min = j;
+        }
+        sw = mas[i];
+        mas[i] = mas[min];
+        mas[min] = sw;
+    }
+}
+return mas;
+
+digit routing pathfinder var
+{
+    digit n = 6;
+    digit mas[6] = 1;
+    mas[1] = 6;
+    mas[2] = 3;
+    mas[3] = 5;
+    mas[5] = 2;
+    mas = perform quicksort mas, n;
+}
+return 0;

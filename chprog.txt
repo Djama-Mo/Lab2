@@ -1,0 +1,17 @@
+digit routing pathfinder var
+{
+    digit a = 7;
+    digit oct = 042;
+    digit hex = 0xF1;
+    size(oct);
+    to logic oct;
+    logic lg = false;
+    to digit lg;
+    digit mas[4] = 8;
+    resize mas[2];
+    lte [] mas;
+    a = !hex;
+    hex = hex && oct;
+    a = most mas;
+}
+return 0;
