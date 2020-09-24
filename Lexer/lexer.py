@@ -1,6 +1,17 @@
 import ply.lex as lex
 
 
+data_check = '''
+digit routing pathfinder a
+{
+    digit a = 10;
+    a = a * 2;
+}
+return a;
+
+'''
+
+
 def main():
     print("Hi, nig'")
     with open('example.txt', 'r') as fh:
@@ -36,6 +47,14 @@ reserved = {
     'size': 'SIZE',
     'resize': 'RESIZE',
     'to': 'TO',
+    'eq': 'EQ',
+    'lt': 'LT',
+    'gt': 'GT',
+    'lte': 'LTE',
+    'gte': 'GTE',
+    'please': 'PLEASE',
+    'thank': 'THANK',
+    'you': 'YOU'
 }
 
 
@@ -45,8 +64,7 @@ class Lexer(object):
         self.lexer = lex.lex(module=self)
 
     tokens = ['INT_DEC', 'INT_OCT', 'INT_HEX', 'PLUS',
-              'MINUS', 'DIV', 'MUL', 'EQ', 'LT', 'GT', 'LTE', 'GTE',
-              'VARIABLE', 'COMMA', 'AND', 'DENY', 'LBRACKET', 'RBRACKET',
+              'MINUS', 'DIV', 'MUL', 'EQQ', 'VARIABLE', 'COMMA', 'AND', 'DENY', 'LBRACKET', 'RBRACKET',
               'L_FIGBRACKET', 'R_FIGBRACKET', 'NL', 'ENDSTR', 'L_SQBRACKET',
               'R_SQBRACKET'] + list(reserved.values())
 
@@ -54,11 +72,11 @@ class Lexer(object):
     t_MINUS = r'\-'
     t_DIV = r'\/'
     t_MUL = r'\*'
-    t_EQ = r'\='
-    t_LT = r'\<'
-    t_GT = r'\>'
-    t_LTE = r'\<\='
-    t_GTE = r'\>\='
+    t_EQQ = r'\='
+    # t_LT = r'\<'
+    # t_GT = r'\>'
+    # t_LTE = r'\<\='
+    # t_GTE = r'\>\='
     t_COMMA = r'\,'
     t_AND = r'&&'
     t_DENY = r'\!'
@@ -81,12 +99,12 @@ class Lexer(object):
         return t
 
     def t_INT_HEX(self, t):
-        r'([0][x][A-F][0-9A-F]*)|([0-9]([A-F]+[0-9]*)*)'# 0xA1 1A
+        r'([0][x][A-F][0-9A-F]*)|([0-9]([0-9]*[A-F]+[0-9]*)+)'
         t.value = int(t.value, 16)
         return t
 
     def t_INT_DEC(self, t):
-        r'\d+'
+        r'-?\d+'
         t.value = int(t.value)
         return t
 
